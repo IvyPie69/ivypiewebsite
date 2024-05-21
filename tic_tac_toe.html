@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - Cool Interactive Website</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .tic-tac-toe {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 5px;
+            margin: 20px auto;
+            width: max-content;
+        }
+        .tic-tac-toe button {
+            width: 100px;
+            height: 100px;
+            font-size: 24px;
+            cursor: pointer;
+            background-color: #fff;
+            border: 2px solid #ccc;
+            color: #000; /* Ensure the text is visible */
+            transition: background-color 0.3s; /* Add transition for smooth hover effect */
+        }
+        .tic-tac-toe button:hover {
+            background-color: #03c400; /* Change background color on hover */
+        }
+        .turn-indicator {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('.tic-tac-toe button');
+            const turnIndicator = document.querySelector('.turn-indicator');
+            let currentPlayer = 'X';
+
+            turnIndicator.textContent = `Current Turn: ${currentPlayer}`;
+
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    if (button.textContent === '') {
+                        button.textContent = currentPlayer;
+                        if (checkWin()) {
+                            setTimeout(() => {
+                                alert(`${currentPlayer} wins!`);
+                                resetGame();
+                            }, 100); // Delay alert by 100 milliseconds
+                        } else if (Array.from(buttons).every(btn => btn.textContent !== '')) {
+                            setTimeout(() => {
+                                alert("It's a draw!");
+                                resetGame();
+                            }, 100); // Delay alert by 100 milliseconds
+                        } else {
+                            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                            turnIndicator.textContent = `Current Turn: ${currentPlayer}`;
+                        }
+                    }
+                });
+            });
+
+            function checkWin() {
+                const winningCombinations = [
+                    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                    [0, 4, 8], [2, 4, 6]
+                ];
+                return winningCombinations.some(combination => {
+                    return combination.every(index => {
+                        return buttons[index].textContent === currentPlayer;
+                    });
+                });
+            }
+
+            function resetGame() {
+                buttons.forEach(button => button.textContent = '');
+                currentPlayer = 'X';
+                turnIndicator.textContent = `Current Turn: ${currentPlayer}`;
+            }
+        });
+
+
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Tic Tac Toe</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="games.html">Games</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="turn-indicator"></div>
+        <div class="tic-tac-toe">
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+        </div>
+    </main>
+</body>
+</html>
